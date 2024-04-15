@@ -31,7 +31,9 @@ class VeryLargeInsertCamp extends StatelessWidget {
                   color: Colors.green,
                   size: 40,
                 ),
-                SizedBox(width: 10,),
+                SizedBox(
+                  width: 10,
+                ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width - (margin * 5),
                   height: 50,

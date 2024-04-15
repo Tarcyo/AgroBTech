@@ -6,6 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
 import 'package:ifg_mobile_estudante/reusableWidgets/veryLargeInserCamp.dart';
 import 'package:ifg_mobile_estudante/reusableWidgets/tableOfResults.dart';
+import 'package:ifg_mobile_estudante/reusableWidgets/attachmentsList.dart';
 
 class CreateFilesScreen extends StatefulWidget {
   CreateFilesScreen({Key? key}) : super(key: key);
@@ -23,6 +24,8 @@ class _CreateFilesScreenState extends State<CreateFilesScreen>
     "Informações",
     "Resultados",
     "Observações",
+    "Anexos",
+    "Exportar",
   ];
 
   @override
@@ -211,7 +214,7 @@ class _CreateFilesScreenState extends State<CreateFilesScreen>
       ),
       right: IconButton(
         icon: Icon(
-          Icons.help_outline,
+          Icons.save_as,
           color: Colors.white,
           size: screenWidth * 0.07,
         ),
@@ -321,6 +324,106 @@ class _CreateFilesScreenState extends State<CreateFilesScreen>
       );
     }
 
+    if (page == "Resultados") {
+      return SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: EdgeInsets.only(bottom: screenHeight * 0.01),
+              color: Colors.white,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    physics: const BouncingScrollPhysics(),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          DataTableWidget(),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: screenWidth * 0.05),
+                ],
+              ),
+            )
+          ],
+        ),
+      );
+    }
+
+    if (page == "Anexos") {
+      return AttachmentsList();
+    }
+
+    if (page == "Exportar") {
+      return Column(children: [
+        Icon(
+          Icons.picture_as_pdf,
+          size: 120,
+          color: Colors.green,
+        ),
+        SizedBox(height: 25,),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                // Adicione aqui a lógica para salvar o PDF
+                print('PDF salvo!');
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Salvar",
+                    style: TextStyle(color: Colors.white, fontSize: 14),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Icon(Icons.save)
+                ],
+              ),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // Adicione aqui a lógica para salvar o PDF
+                print('PDF salvo!');
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Compartilhar",
+                      style: TextStyle(color: Colors.white, fontSize: 14)),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Icon(Icons.share)
+                ],
+              ),
+            ),
+          ],
+        )
+      ]);
+    }
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -343,29 +446,55 @@ class _CreateFilesScreenState extends State<CreateFilesScreen>
                             controller: _controller,
                             text: "Nome do arquivo",
                             icon: Icons.description),
+                        SizedBox(
+                          height: 5,
+                        ),
                         VeryLargeInsertCamp(
                             controller: _controller,
                             text: "Tipo análise",
                             icon: Icons.biotech),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        VeryLargeInsertCamp(
+                            controller: _controller,
+                            text: "Número laudo",
+                            icon: Icons.pin),
+                        SizedBox(
+                          height: 5,
+                        ),
                         VeryLargeInsertCamp(
                             controller: _controller,
                             text: "Contratante",
                             icon: Icons.handshake_sharp),
+                        SizedBox(
+                          height: 5,
+                        ),
                         VeryLargeInsertCamp(
                             controller: _controller,
                             text: "Material",
                             icon: Icons.science_rounded),
+                        SizedBox(
+                          height: 5,
+                        ),
                         VeryLargeInsertCamp(
                             controller: _controller,
                             text: "Data de entrada",
                             icon: Icons.calendar_month),
+                        SizedBox(
+                          height: 5,
+                        ),
                         VeryLargeInsertCamp(
                             controller: _controller,
                             text: "CNPJ",
                             icon: Icons.corporate_fare_outlined),
                         SizedBox(
-                          height: 100,
-                        )
+                          height: 5,
+                        ),
+                        VeryLargeInsertCamp(
+                            controller: _controller,
+                            text: "Fazenda",
+                            icon: Icons.agriculture),
                       ],
                     ),
                   ),
