@@ -2,26 +2,29 @@ import 'package:flutter/material.dart';
 import 'veryLargeInserCamp.dart';
 
 class ObservationsList extends StatefulWidget {
+  final List<TextEditingController> controllers;
+
+  const ObservationsList({Key? key, required this.controllers}) : super(key: key);
+
   @override
   _ObservationsListState createState() => _ObservationsListState();
 }
 
 class _ObservationsListState extends State<ObservationsList> {
-  List<TextEditingController> _controllers = [];
-
   @override
   Widget build(BuildContext context) {
     List<Widget> observations = [];
 
-    for (TextEditingController controller in _controllers) {
+    for (TextEditingController controller in widget.controllers) {
       observations.add(
         VeryLargeInsertCamp(
-            controller: controller,
-            text: "Digite a observação",
-            icon: Icons.assignment),
+          controller: controller,
+          text: "Digite a observação",
+          icon: Icons.assignment,
+        ),
       );
     }
-    return _controllers.isEmpty==false
+    return widget.controllers.isNotEmpty
         ? SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             physics: const BouncingScrollPhysics(),
@@ -44,7 +47,7 @@ class _ObservationsListState extends State<ObservationsList> {
                         child: IconButton(
                           onPressed: () {
                             setState(() {
-                              _controllers.add(TextEditingController());
+                              widget.controllers.add(TextEditingController());
                             });
                           },
                           icon: Icon(
@@ -65,7 +68,7 @@ class _ObservationsListState extends State<ObservationsList> {
                         child: IconButton(
                           onPressed: () {
                             setState(() {
-                              _controllers.removeLast();
+                              widget.controllers.removeLast();
                             });
                           },
                           icon: Icon(
@@ -83,33 +86,34 @@ class _ObservationsListState extends State<ObservationsList> {
           )
         : Center(
             child: Column(
-            children: [
+              children: [
                 Text(
-                  "Nenhuma observação adicionado",
+                  "Nenhuma observação adicionada",
                   style: TextStyle(fontSize: 18),
                 ),
                 SizedBox(
                   height: 15,
                 ),
-              Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.green,
-                ),
-                child: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _controllers.add(TextEditingController());
-                    });
-                  },
-                  icon: Icon(
-                    Icons.add,
-                    size: 30,
-                    color: Colors.white,
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.green,
+                  ),
+                  child: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        widget.controllers.add(TextEditingController());
+                      });
+                    },
+                    icon: Icon(
+                      Icons.add,
+                      size: 30,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ));
+              ],
+            ),
+          );
   }
 }

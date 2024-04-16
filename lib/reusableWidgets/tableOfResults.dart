@@ -1,13 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class DataTableWidget extends StatefulWidget {
+  final List<DataRow>?
+      initialRows; // Alterando a lista de linhas para ser opcional
+
+  DataTableWidget({Key? key, this.initialRows}) : super(key: key);
+
   @override
   _DataTableWidgetState createState() => _DataTableWidgetState();
 }
 
 class _DataTableWidgetState extends State<DataTableWidget> {
-  List<DataRow> rows = [];
+  late List<DataRow> rows;
+
+  @override
+  void initState() {
+    super.initState();
+    // Inicializando a lista de linhas com a lista recebida no construtor ou uma lista vazia se não for fornecida
+    rows = widget.initialRows ?? [];
+    if (rows.isEmpty) {
+      addRow(); // Adicionando uma linha inicial se a lista estiver vazia
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,27 +35,35 @@ class _DataTableWidgetState extends State<DataTableWidget> {
             child: DataTable(
               horizontalMargin: 10,
               columns: [
-                DataColumn(label: Text('ID lab', style: TextStyle(color: Colors.green))), // Definindo o estilo de texto verde
-                DataColumn(label: Text('ID cliente', style: TextStyle(color: Colors.green))), // Definindo o estilo de texto verde
-                DataColumn(label: Text('Conídios/ml', style: TextStyle(color: Colors.green))), // Definindo o estilo de texto verde
-                DataColumn(label: Text('UFC/ml', style: TextStyle(color: Colors.green))), // Definindo o estilo de texto verde
+                DataColumn(
+                    label:
+                        Text('ID lab', style: TextStyle(color: Colors.green))),
+                DataColumn(
+                    label: Text('ID cliente',
+                        style: TextStyle(color: Colors.green))),
+                DataColumn(
+                    label: Text('Conídios/ml',
+                        style: TextStyle(color: Colors.green))),
+                DataColumn(
+                    label:
+                        Text('UFC/ml', style: TextStyle(color: Colors.green))),
               ],
               rows: List.from(rows),
             ),
           ),
         ),
-        SizedBox(height: 10), // Espaçamento entre a tabela e os botões
+        SizedBox(height: 10),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
               onPressed: addRow,
-              icon: Icon(Icons.add,size: 40,),
+              icon: Icon(Icons.add, size: 40),
             ),
-            SizedBox(width: 5,),
+            SizedBox(width: 5),
             IconButton(
               onPressed: removeRow,
-              icon: Icon(Icons.remove,size: 40,),
+              icon: Icon(Icons.remove, size: 40),
             ),
           ],
         ),
@@ -53,11 +75,10 @@ class _DataTableWidgetState extends State<DataTableWidget> {
     setState(() {
       rows.add(
         DataRow(cells: [
-          DataCell(TextField()),
-          DataCell(TextField()),
-          DataCell(TextField()),
-          DataCell(TextField()),
-          
+          DataCell(tableCell(TextEditingController())),
+          DataCell(tableCell(TextEditingController())),
+          DataCell(tableCell(TextEditingController())),
+          DataCell(tableCell(TextEditingController())),
         ]),
       );
     });
@@ -66,14 +87,25 @@ class _DataTableWidgetState extends State<DataTableWidget> {
   void removeRow() {
     setState(() {
       if (rows.isNotEmpty) {
-        rows.removeLast(); // Removendo a última linha
+        rows.removeLast();
       }
     });
   }
+}
+
+class tableCell extends StatelessWidget {
+  final TextEditingController _controller;
+
+  TextEditingController get controller => _controller;
+
+  tableCell(
+    this._controller,
+  );
 
   @override
-  void initState() {
-    super.initState();
-    addRow(); // Adicionando uma linha inicial
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: _controller,
+    );
   }
 }

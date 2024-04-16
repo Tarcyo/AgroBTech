@@ -1,24 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
+import 'dart:io';
 
 class AttachmentsList extends StatefulWidget {
+  final List<Widget> attachments;
+  final List<File> images;
+  final List<TextEditingController> observationsControllers;
+
+
+  const AttachmentsList({
+    Key? key,
+    required this.attachments,
+    required this.images,
+    required this.observationsControllers,
+  }) : super(key: key);
+
   @override
   _AttachmentsListState createState() => _AttachmentsListState();
 }
 
 class _AttachmentsListState extends State<AttachmentsList> {
-  List<TextEditingController> _observationsControllers = [
-    TextEditingController()
-  ];
-  List<Widget> _attrachments = [];
-  List<File> images = [];
+  late List<TextEditingController> _observationsControllers;
+  late List<Widget> _attrachments;
+  late List<File> _images;
 
   @override
+  void initState() {
+    super.initState();
+    _observationsControllers = widget.observationsControllers;
+    _attrachments = widget.attachments;
+    _images = widget.images;
+  }
+  @override
   Widget build(BuildContext context) {
-    if (_observationsControllers.isEmpty) {
-      _observationsControllers.add(TextEditingController());
-    }
+    
 
     return _attrachments.isEmpty == false
         ? Center(
@@ -47,7 +65,7 @@ class _AttachmentsListState extends State<AttachmentsList> {
                               setState(() {
                                 _observationsControllers
                                     .add(TextEditingController());
-                                images.add(File(result));
+                                _images.add(File(result));
                                 _attrachments.add(
                                   Container(
                                     padding: EdgeInsets.only(
@@ -200,7 +218,7 @@ class _AttachmentsListState extends State<AttachmentsList> {
                         ),
                         child: IconButton(
                           onPressed: () {
-                            images.removeLast();
+                            _images.removeLast();
                             setState(() {
                               _attrachments.removeLast();
                               _observationsControllers.removeLast();
@@ -242,7 +260,7 @@ class _AttachmentsListState extends State<AttachmentsList> {
                       } else {
                         setState(() {
                           _observationsControllers.add(TextEditingController());
-                          images.add(File(result));
+                          _images.add(File(result));
                           _attrachments.add(
                             Container(
                               padding: EdgeInsets.only(

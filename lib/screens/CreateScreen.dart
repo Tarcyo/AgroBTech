@@ -18,7 +18,29 @@ class CreateFilesScreen extends StatefulWidget {
 class _CreateFilesScreenState extends State<CreateFilesScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+
   TextEditingController _controller = TextEditingController();
+
+  // Informações:
+  TextEditingController _fileNameController = TextEditingController();
+  TextEditingController _analyzeController = TextEditingController();
+  TextEditingController _numberController = TextEditingController();
+  TextEditingController _contractorController = TextEditingController();
+  TextEditingController _materialController = TextEditingController();
+  TextEditingController _dateController = TextEditingController();
+  TextEditingController _cnpjController = TextEditingController();
+  TextEditingController _farmController = TextEditingController();
+
+  // Resultados
+  List<DataRow> _results = [];
+
+  //Observações
+  List<TextEditingController> _observations = [];
+
+  //Anexos
+  List<Widget> _attrachments = [];
+  List<File> _images = [];
+  List<TextEditingController> _attrachmentsControllers = [];
 
   final List<String> pages = [
     "Informações",
@@ -31,10 +53,7 @@ class _CreateFilesScreenState extends State<CreateFilesScreen>
   @override
   void initState() {
     super.initState();
-    int currentDayIndex = DateTime.now().weekday - 1;
-    if (currentDayIndex < 0 || currentDayIndex >= pages.length) {
-      currentDayIndex = 0;
-    }
+    int currentDayIndex = 0;
     _tabController = TabController(
       length: pages.length,
       vsync: this,
@@ -48,7 +67,7 @@ class _CreateFilesScreenState extends State<CreateFilesScreen>
     super.dispose();
   }
 
-  Future<void> _createAndWriteToFile() async {
+  Future<void> _createAndWriteToFile(String nome) async {
     try {
       // Obter o diretório de documentos
       Directory documentsDirectory = await getApplicationDocumentsDirectory();
@@ -58,7 +77,7 @@ class _CreateFilesScreenState extends State<CreateFilesScreen>
       await Directory(rascunhosPath).create(recursive: true);
 
       // Criar o arquivo JSON
-      File file = File('$rascunhosPath/oi.json');
+      File file = File('$rascunhosPath/' + nome + '.json');
 
       // Criar os dados que serão escritos no arquivo JSON
       Map<String, dynamic> data = {
@@ -173,8 +192,7 @@ class _CreateFilesScreenState extends State<CreateFilesScreen>
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          color: Colors
-              .white, // Defina uma cor sólida aqui para cobrir toda a tela
+          color: Colors.white,
         ),
         child: SafeArea(
           child: Column(
@@ -187,6 +205,13 @@ class _CreateFilesScreenState extends State<CreateFilesScreen>
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          criarArquivoJson();
+        },
+        child: Icon(Icons.add), // Ícone do botão flutuante
+        backgroundColor: Colors.blue, // Cor de fundo do botão flutuante
       ),
     );
   }
@@ -265,6 +290,92 @@ class _CreateFilesScreenState extends State<CreateFilesScreen>
     );
   }
 
+  void criarArquivoJson() {
+    String nomeArquivo = "";
+    String tipoAnalise = "";
+    String numeroLaudo = "";
+    String contratante = "";
+    String material = "";
+    String dataEntrada = "";
+    String cnpj = "";
+    String fazenda = "";
+
+    if (_fileNameController.text.isEmpty == false) {
+      nomeArquivo = _fileNameController.text;
+    }
+    if (_analyzeController.text.isEmpty == false) {
+      tipoAnalise = _analyzeController.text;
+    }
+    if (_numberController.text.isEmpty == false) {
+      numeroLaudo = _numberController.text;
+    }
+    if (_contractorController.text.isEmpty == false) {
+      contratante = _contractorController.text;
+    }
+    if (_materialController.text.isEmpty == false) {
+      material = _materialController.text;
+    }
+    if (_dateController.text.isEmpty == false) {
+      dataEntrada = _dateController.text;
+    }
+    if (_cnpjController.text.isEmpty == false) {
+      cnpj = _cnpjController.text;
+    }
+    if (_farmController.text.isEmpty == false) {
+      fazenda = _farmController.text;
+    }
+
+    final results = [];
+
+    for (final r in _results) {
+      final cells = [];
+      for (final c in r.cells) {
+        final cell = c.child as tableCell;
+        cells.add(cell.controller.text);
+      }
+      results.add(cells);
+    }
+
+    final observacoes = [];
+
+    for (final o in _observations) {
+      observacoes.add(o.text);
+    }
+
+    final anexos = [];
+
+    for (final i in _images) {
+      anexos.add(i.path);
+    }
+
+    final descricaoAnexos = [];
+
+    for (final da in _attrachmentsControllers) {
+      descricaoAnexos.add(da.text);
+    }
+
+    Map<String, dynamic> dados = {
+      "informacoes": {
+        "Nome_Arquivo": nomeArquivo,
+        "Tipo_de_analise": tipoAnalise,
+        "Numero_laudo": numeroLaudo,
+        "Contratante": contratante,
+        "Material": material,
+        "Data_de_entrada": dataEntrada,
+        "CNPJ": cnpj,
+        "Fazenda": fazenda,
+      },
+      "resultados": results,
+      "observacoes": observacoes,
+      "anexos": anexos,
+      "descricao_anexos": descricaoAnexos,
+    };
+
+    String jsonString = json.encode(dados);
+
+    print(jsonString);
+  }
+
   Widget _buildBody(String page, BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
@@ -281,7 +392,7 @@ class _CreateFilesScreenState extends State<CreateFilesScreen>
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ObservationsList(),
+                  ObservationsList(controllers: _observations),
                   SizedBox(height: screenWidth * 0.05),
                 ],
               ),
@@ -310,40 +421,9 @@ class _CreateFilesScreenState extends State<CreateFilesScreen>
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          DataTableWidget(),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: screenWidth * 0.05),
-                ],
-              ),
-            )
-          ],
-        ),
-      );
-    }
-
-    if (page == "Resultados") {
-      return SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: EdgeInsets.only(bottom: screenHeight * 0.01),
-              color: Colors.white,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    physics: const BouncingScrollPhysics(),
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          DataTableWidget(),
+                          DataTableWidget(
+                            initialRows: _results,
+                          ),
                         ],
                       ),
                     ),
@@ -358,7 +438,11 @@ class _CreateFilesScreenState extends State<CreateFilesScreen>
     }
 
     if (page == "Anexos") {
-      return AttachmentsList();
+      return AttachmentsList(
+        attachments: _attrachments,
+        images: _images,
+        observationsControllers: _attrachmentsControllers,
+      );
     }
 
     if (page == "Exportar") {
@@ -368,7 +452,9 @@ class _CreateFilesScreenState extends State<CreateFilesScreen>
           size: 120,
           color: Colors.green,
         ),
-        SizedBox(height: 25,),
+        SizedBox(
+          height: 25,
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -443,56 +529,56 @@ class _CreateFilesScreenState extends State<CreateFilesScreen>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         VeryLargeInsertCamp(
-                            controller: _controller,
+                            controller: _fileNameController,
                             text: "Nome do arquivo",
                             icon: Icons.description),
                         SizedBox(
                           height: 5,
                         ),
                         VeryLargeInsertCamp(
-                            controller: _controller,
+                            controller: _analyzeController,
                             text: "Tipo análise",
                             icon: Icons.biotech),
                         SizedBox(
                           height: 5,
                         ),
                         VeryLargeInsertCamp(
-                            controller: _controller,
+                            controller: _numberController,
                             text: "Número laudo",
                             icon: Icons.pin),
                         SizedBox(
                           height: 5,
                         ),
                         VeryLargeInsertCamp(
-                            controller: _controller,
+                            controller: _contractorController,
                             text: "Contratante",
                             icon: Icons.handshake_sharp),
                         SizedBox(
                           height: 5,
                         ),
                         VeryLargeInsertCamp(
-                            controller: _controller,
+                            controller: _materialController,
                             text: "Material",
                             icon: Icons.science_rounded),
                         SizedBox(
                           height: 5,
                         ),
                         VeryLargeInsertCamp(
-                            controller: _controller,
+                            controller: _dateController,
                             text: "Data de entrada",
                             icon: Icons.calendar_month),
                         SizedBox(
                           height: 5,
                         ),
                         VeryLargeInsertCamp(
-                            controller: _controller,
+                            controller: _cnpjController,
                             text: "CNPJ",
                             icon: Icons.corporate_fare_outlined),
                         SizedBox(
                           height: 5,
                         ),
                         VeryLargeInsertCamp(
-                            controller: _controller,
+                            controller: _farmController,
                             text: "Fazenda",
                             icon: Icons.agriculture),
                       ],
