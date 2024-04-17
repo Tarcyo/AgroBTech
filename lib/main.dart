@@ -1,9 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'screens/SaveFilesScreen.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+import 'providers/fileNameProvider.dart';
 
-void main() {
-  runApp(const AgroBioTech());
+void main() async {
+  final files = await _listFilesInRascunhos();
+  final filesNames = _obterNomesArquivos(files);
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => FileNameProvider(filesNames),
+      child: const AgroBioTech(),
+    ),
+  );
 }
 
 class AgroBioTech extends StatelessWidget {
@@ -28,4 +39,53 @@ class AgroBioTech extends StatelessWidget {
       home: SaveFilesScreen(),
     );
   }
+}
+
+Future<List<FileSystemEntity>> _listFilesInRascunhos() async {
+  try {
+    // Obter o diretório de documentos
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+
+    // Obter o caminho da pasta "rascunhos"
+    String rascunhosPath = '${documentsDirectory.path}/rascunhos';
+
+    // Verificar se a pasta "rascunhos" existe
+    if (await Directory(rascunhosPath).exists()) {
+      // Listar todos os arquivos na pasta "rascunhos"
+      List<FileSystemEntity> files = Directory(rascunhosPath).listSync();
+
+      // Verificar se há arquivos
+      if (files.isNotEmpty) {
+        return files;
+      } else {
+        print('Nenhum arquivo encontrado na pasta "rascunhos".');
+      }
+    } else {
+      print('A pasta "rascunhos" não existe.');
+    }
+  } catch (e) {
+    print('Erro ao listar arquivos: $e');
+  }
+  return [];
+}
+
+List<String> _obterNomesArquivos(List<FileSystemEntity> entidades) {
+  List<String> nomesArquivos = [];
+  for (FileSystemEntity entidade in entidades) {
+    // Verificar se a entidade é um arquivo
+    if (entidade is File) {
+      // Obter apenas o nome do arquivo sem o caminho nem a extensão
+      String nomeArquivo = entidade.path;
+
+      while (nomeArquivo.contains('\\') || nomeArquivo.contains('/')) {
+        nomeArquivo = nomeArquivo.split('/').last;
+        nomeArquivo = nomeArquivo.split('\\').last;
+      }
+      while (nomeArquivo.contains('.')) {
+        nomeArquivo = nomeArquivo.split('.').first;
+      }
+      nomesArquivos.add(nomeArquivo);
+    }
+  }
+  return nomesArquivos;
 }

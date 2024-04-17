@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:file_picker/file_picker.dart';
-import 'dart:io';
 
 class AttachmentsList extends StatefulWidget {
   final List<Widget> attachments;
   final List<File> images;
   final List<TextEditingController> observationsControllers;
-
 
   const AttachmentsList({
     Key? key,
@@ -34,10 +30,110 @@ class _AttachmentsListState extends State<AttachmentsList> {
     _attrachments = widget.attachments;
     _images = widget.images;
   }
+
   @override
   Widget build(BuildContext context) {
-    
-
+    if (_images.isEmpty == false && _attrachments.isEmpty) {
+      for (int i = 0; i < _images.length; i++) {
+        _attrachments.add(
+          Container(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).size.height * 0.01),
+            color: Colors.white,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "Anexo " + (_attrachments.length + 1).toString(),
+                  style: TextStyle(fontSize: 18, color: Colors.green),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  physics: const BouncingScrollPhysics(),
+                  child: Center(
+                    child: Container(
+                      height: MediaQuery.of(context).size.width * 0.38,
+                      width: MediaQuery.of(context).size.width * 0.38,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.rectangle,
+                        image: DecorationImage(
+                          image: FileImage(File(_images[i].path)),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Positioned(
+                  top: 1,
+                  left: 1,
+                  right: 1,
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          SizedBox(
+                            width:
+                                MediaQuery.of(context).size.width - (0.3 * 5),
+                            height: 50,
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(180),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 2,
+                                    blurRadius: 7,
+                                    offset: Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal:
+                                        8.0), // Adiciona um pequeno padding
+                                child: TextField(
+                                  controller: _observationsControllers[i],
+                                  textAlignVertical: TextAlignVertical.center,
+                                  textAlign: TextAlign.start,
+                                  maxLines: null,
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: 'Descrição',
+                                    hintStyle: TextStyle(
+                                        color: Colors.grey[500],
+                                        fontSize:
+                                            16), // Altera a cor do texto de dica para preto
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical:
+                                            12.0), // Define o padding do conteúdo
+                                  ),
+                                  keyboardType: TextInputType.multiline,
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.grey[900]),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+    }
     return _attrachments.isEmpty == false
         ? Center(
             child: SingleChildScrollView(

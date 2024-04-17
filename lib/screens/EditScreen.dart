@@ -10,16 +10,49 @@ import 'package:AgroBTech/reusableWidgets/attachmentsList.dart';
 import 'package:provider/provider.dart';
 import 'package:AgroBTech/providers/fileNameProvider.dart';
 
-class CreateFilesScreen extends StatefulWidget {
-  CreateFilesScreen({Key? key}) : super(key: key);
+class EditFilesScreen extends StatefulWidget {
+  EditFilesScreen(this._savedData, {Key? key}) : super(key: key);
+  final String _savedData;
 
   @override
-  State<CreateFilesScreen> createState() => _CreateFilesScreenState();
+  State<EditFilesScreen> createState() => _EditFilesScreenState(_savedData);
 }
 
-class _CreateFilesScreenState extends State<CreateFilesScreen>
+class _EditFilesScreenState extends State<EditFilesScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  final String _savedData;
+
+  _EditFilesScreenState(this._savedData) {
+    if (_savedData.isEmpty == false) {
+      final data = json.decode(_savedData);
+      print("Aqui:" + _savedData);
+      _fileNameController.text = data['informacoes']['Nome_Arquivo'];
+      _analyzeController.text = data['informacoes']['Tipo_de_analise'];
+      _numberController.text = data['informacoes']['Numero_laudo'];
+      _contractorController.text = data['informacoes']['Contratante'];
+      _materialController.text = data['informacoes']['Material'];
+      _dateController.text = data['informacoes']['Data_de_entrada'];
+      _cnpjController.text = data['informacoes']['CNPJ'];
+      _farmController.text = data['informacoes']['Fazenda'];
+      for (final i in data['observacoes']) {
+        TextEditingController tc = TextEditingController();
+        tc.text = i;
+
+        _observations.add(tc);
+      }
+      for (final i in data['anexos']) {
+        _images.add(File(i));
+      }
+      for (final i in data['descricao_anexos']) {
+        TextEditingController tc = TextEditingController();
+        tc.text = i;
+        _attrachmentsControllers.add(tc);
+      }
+    } else {
+      print("Arquivo vazio!");
+    }
+  }
 
   // Informações:
   TextEditingController _fileNameController = TextEditingController();
@@ -98,6 +131,83 @@ class _CreateFilesScreenState extends State<CreateFilesScreen>
           duration: Duration(seconds: 3),
         ),
       );
+    }
+  }
+
+  Future<List<FileSystemEntity>?> _listFilesInRascunhos() async {
+    try {
+      // Obter o diretório de documentos
+      Directory documentsDirectory = await getApplicationDocumentsDirectory();
+
+      // Obter o caminho da pasta "rascunhos"
+      String rascunhosPath = '${documentsDirectory.path}/rascunhos';
+
+      // Verificar se a pasta "rascunhos" existe
+      if (await Directory(rascunhosPath).exists()) {
+        // Listar todos os arquivos na pasta "rascunhos"
+        List<FileSystemEntity> files = Directory(rascunhosPath).listSync();
+
+        // Verificar se há arquivos
+        if (files.isNotEmpty) {
+          // Imprimir o caminho de cada arquivo
+          print('Arquivos encontrados na pasta "rascunhos":');
+          for (var file in files) {
+            print(file.path);
+          }
+          return files;
+        } else {
+          print('Nenhum arquivo encontrado na pasta "rascunhos".');
+        }
+      } else {
+        print('A pasta "rascunhos" não existe.');
+      }
+    } catch (e) {
+      print('Erro ao listar arquivos: $e');
+    }
+
+    return null;
+  }
+
+  List<String> _obterNomesArquivos(List<FileSystemEntity> entidades) {
+    List<String> nomesArquivos = [];
+    for (FileSystemEntity entidade in entidades) {
+      // Verificar se a entidade é um arquivo
+      if (entidade is File) {
+        // Obter apenas o nome do arquivo sem o caminho nem a extensão
+        String nomeArquivo = entidade.path;
+
+        while (nomeArquivo.contains('\\') || nomeArquivo.contains('/')) {
+          nomeArquivo = nomeArquivo.split('/').last;
+          nomeArquivo = nomeArquivo.split('\\').last;
+        }
+        while (nomeArquivo.contains('.')) {
+          nomeArquivo = nomeArquivo.split('.').first;
+        }
+        nomesArquivos.add(nomeArquivo);
+      }
+    }
+    return nomesArquivos;
+  }
+
+  Future<void> _deleteFile(String filename) async {
+    try {
+      // Obter o diretório de documentos
+      Directory documentsDirectory = await getApplicationDocumentsDirectory();
+
+      // Obter o caminho da pasta "rascunhos"
+      String rascunhosPath = '${documentsDirectory.path}/rascunhos';
+
+      // Verificar se o arquivo existe
+      File fileToDelete = File('$rascunhosPath/$filename');
+      if (await fileToDelete.exists()) {
+        // Excluir o arquivo
+        await fileToDelete.delete();
+        print('Arquivo $filename excluído com sucesso.');
+      } else {
+        print('O arquivo $filename não existe na pasta "rascunhos".');
+      }
+    } catch (e) {
+      print('Erro ao excluir o arquivo: $e');
     }
   }
 
