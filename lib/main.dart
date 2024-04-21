@@ -9,9 +9,11 @@ import 'providers/fileNameProvider.dart';
 void main() async {
   final files = await _listFilesInRascunhos();
   final filesNames = _obterNomesArquivos(files);
+  final pdfs = await _listFilesInMeusPdfs();
+  final pdfNames = _obterNomesArquivos(pdfs);
   runApp(
     ChangeNotifierProvider(
-      create: (context) => FileNameProvider(filesNames),
+      create: (context) => FileNameProvider(filesNames,pdfNames),
       child: const AgroBioTech(),
     ),
   );
@@ -62,6 +64,34 @@ Future<List<FileSystemEntity>> _listFilesInRascunhos() async {
       }
     } else {
       print('A pasta "rascunhos" não existe.');
+    }
+  } catch (e) {
+    print('Erro ao listar arquivos: $e');
+  }
+  return [];
+}
+
+Future<List<FileSystemEntity>> _listFilesInMeusPdfs() async {
+  try {
+    // Obter o diretório de documentos
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+
+    // Obter o caminho da pasta "rascunhos"
+    String rascunhosPath = '${documentsDirectory.path}/meus pdfs';
+
+    // Verificar se a pasta "rascunhos" existe
+    if (await Directory(rascunhosPath).exists()) {
+      // Listar todos os arquivos na pasta "rascunhos"
+      List<FileSystemEntity> files = Directory(rascunhosPath).listSync();
+
+      // Verificar se há arquivos
+      if (files.isNotEmpty) {
+        return files;
+      } else {
+        print('Nenhum arquivo encontrado na pasta "meus pdfs".');
+      }
+    } else {
+      print('A pasta "meus pdfs" não existe.');
     }
   } catch (e) {
     print('Erro ao listar arquivos: $e');

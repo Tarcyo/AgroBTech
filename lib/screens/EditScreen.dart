@@ -35,6 +35,17 @@ class _EditFilesScreenState extends State<EditFilesScreen>
       _dateController.text = data['informacoes']['Data_de_entrada'];
       _cnpjController.text = data['informacoes']['CNPJ'];
       _farmController.text = data['informacoes']['Fazenda'];
+
+      DataRow linha = DataRow(cells: []);
+
+      for (final i in data['resultados']) {
+        for (final j in i) {
+          linha.cells.add(DataCell(tableCell(TextEditingController(text: j))));
+        }
+        _results.add(linha);
+        linha = DataRow(cells: []);
+      }
+
       for (final i in data['observacoes']) {
         TextEditingController tc = TextEditingController();
         tc.text = i;

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:AgroBTech/reusableWidgets/headerBuilder.dart';
-import 'package:AgroBTech/reusableWidgets/pdfCard.dart';
 import 'dart:io';
 import 'CreateScreen.dart';
 import 'package:path_provider/path_provider.dart';
@@ -215,6 +214,15 @@ class _SaveFilesScreenState extends State<SaveFilesScreen>
     final screenWidth = MediaQuery.of(context).size.width;
 
     if (page == "Meus PDFs") {
+      if (Provider.of<FileNameProvider>(listen: true, context)
+          .nomesPdfs
+          .isEmpty) {
+        return Center(
+          child: Text("Nenhum PDF encontrado!"),
+        );
+      }
+      ;
+
       return SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -230,14 +238,11 @@ class _SaveFilesScreenState extends State<SaveFilesScreen>
                     scrollDirection: Axis.horizontal,
                     physics: const BouncingScrollPhysics(),
                     child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          PdfCard(color: Colors.green, height: 100),
-                          PdfCard(color: Colors.green, height: 100),
-                          PdfCard(color: Colors.green, height: 100),
-                          PdfCard(color: Colors.green, height: 100)
-                        ],
+                      child: Consumer<FileNameProvider>(
+                        builder: (context, counterProvider, child) {
+                          return Center(
+                              child: EditCardList(counterProvider.nomesPdfs));
+                        },
                       ),
                     ),
                   ),

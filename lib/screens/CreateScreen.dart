@@ -9,6 +9,7 @@ import 'package:AgroBTech/reusableWidgets/tableOfResults.dart';
 import 'package:AgroBTech/reusableWidgets/attachmentsList.dart';
 import 'package:provider/provider.dart';
 import 'package:AgroBTech/providers/fileNameProvider.dart';
+import 'package:AgroBTech/utils/savePdf.dart';
 
 class CreateFilesScreen extends StatefulWidget {
   CreateFilesScreen({Key? key}) : super(key: key);
@@ -380,9 +381,19 @@ class _CreateFilesScreenState extends State<CreateFilesScreen>
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             ElevatedButton(
-              onPressed: () {
-                // Adicione aqui a lógica para salvar o PDF
-                print('PDF salvo!');
+              onPressed: () async {
+                await createPDF(
+                    context,
+                    _fileNameController.text,
+                    _analyzeController.text,
+                    _numberController.text,
+                    _contractorController.text,
+                    _materialController.text,
+                    _dateController.text,
+                    _cnpjController.text,
+                    _farmController.text,
+                    _results,
+                    _observations,_images,_attrachmentsControllers);
               },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.green),

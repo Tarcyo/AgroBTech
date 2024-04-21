@@ -1,15 +1,8 @@
 import 'package:flutter/material.dart';
 
 class PdfCard extends StatelessWidget {
-  final double height;
-  final Color color;
-  final Color borderColor;
-
-  PdfCard({
-    required this.height,
-    required this.color,
-    this.borderColor = Colors.green,
-  });
+  final String _text;
+  PdfCard(this._text);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +17,7 @@ class PdfCard extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(180.0),
           border: Border.all(
-            color: borderColor,
+            color: Colors.green,
             width: 1.5,
           ),
         ),
@@ -42,7 +35,7 @@ class PdfCard extends StatelessWidget {
                   width: 10,
                 ),
                 Text(
-                  "Arquivo 1",
+                  _text,
                   style: TextStyle(color: Colors.green, fontSize: 16),
                 ),
               ],

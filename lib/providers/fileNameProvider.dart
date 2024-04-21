@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class FileNameProvider extends ChangeNotifier {
-  FileNameProvider(this._nomesRascunhos);
+  FileNameProvider(this._nomesRascunhos, this._nomesPdfs);
   List<String> _nomesRascunhos = [];
   List<String> _nomesPdfs = [];
 
