@@ -5,7 +5,7 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/services.dart';
 import 'package:share/share.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:AgroBTech/reusableWidgets/tableOfResults.dart';
+import 'package:AgroBTech/myWidgets/tableOfResults.dart';
 
 pw.Widget _buildTable(List<dynamic> list) {
   print(list);
@@ -96,6 +96,7 @@ Future<void> createPDF(
         duration: Duration(seconds: 3),
       ),
     );
+    return;
   }
   if (tipoAnalise.isEmpty) {
     tipoAnalise = "-";
@@ -152,10 +153,11 @@ Future<void> createPDF(
     );
     anexos.add(
       pw.Center(
-        child: pw.Text("Figura "+(i+1).toString()+". " + descricoes[i].text,
-            style: const pw.TextStyle(
-              fontSize: 14,
-            )),
+        child:
+            pw.Text("Figura " + (i + 1).toString() + ". " + descricoes[i].text,
+                style: const pw.TextStyle(
+                  fontSize: 14,
+                )),
       ),
     );
   }

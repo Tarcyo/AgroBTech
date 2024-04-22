@@ -1,9 +1,10 @@
+import 'package:AgroBTech/myWidgets/pdfCardList.dart';
 import 'package:flutter/material.dart';
-import 'package:AgroBTech/reusableWidgets/headerBuilder.dart';
+import 'package:AgroBTech/myWidgets/headerBuilder.dart';
 import 'dart:io';
 import 'CreateScreen.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:AgroBTech/reusableWidgets/editCardList.dart';
+import 'package:AgroBTech/myWidgets/editCardList.dart';
 import 'package:provider/provider.dart';
 import 'package:AgroBTech/providers/fileNameProvider.dart';
 
@@ -165,8 +166,8 @@ class _SaveFilesScreenState extends State<SaveFilesScreen>
         onPressed: () {},
       ),
       center: Container(
-        height: MediaQuery.of(context).size.width * 0.6,
-        width: MediaQuery.of(context).size.width * 0.6,
+        height: MediaQuery.of(context).size.width * 0.44,
+        width: MediaQuery.of(context).size.width * 0.44,
         decoration: BoxDecoration(
           color: Colors.white,
           shape: BoxShape.circle,
@@ -241,7 +242,7 @@ class _SaveFilesScreenState extends State<SaveFilesScreen>
                       child: Consumer<FileNameProvider>(
                         builder: (context, counterProvider, child) {
                           return Center(
-                              child: EditCardList(counterProvider.nomesPdfs));
+                              child: PdfCardList(counterProvider.nomesPdfs));
                         },
                       ),
                     ),

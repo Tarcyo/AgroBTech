@@ -7,6 +7,8 @@ import 'dart:io';
 import 'providers/fileNameProvider.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Certifica-se de que os serviços do Flutter foram inicializados
+
   final files = await _listFilesInRascunhos();
   final filesNames = _obterNomesArquivos(files);
   final pdfs = await _listFilesInMeusPdfs();
@@ -78,6 +80,7 @@ Future<List<FileSystemEntity>> _listFilesInMeusPdfs() async {
 
     // Obter o caminho da pasta "rascunhos"
     String rascunhosPath = '${documentsDirectory.path}/meus pdfs';
+    
 
     // Verificar se a pasta "rascunhos" existe
     if (await Directory(rascunhosPath).exists()) {

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:AgroBTech/reusableWidgets/headerBuilder.dart';
-import 'package:AgroBTech/reusableWidgets/observationsLIst.dart';
+import 'package:AgroBTech/myWidgets/headerBuilder.dart';
+import 'package:AgroBTech/myWidgets/observationsLIst.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
-import 'package:AgroBTech/reusableWidgets/veryLargeInserCamp.dart';
-import 'package:AgroBTech/reusableWidgets/tableOfResults.dart';
-import 'package:AgroBTech/reusableWidgets/attachmentsList.dart';
+import 'package:AgroBTech/myWidgets/veryLargeInserCamp.dart';
+import 'package:AgroBTech/myWidgets/tableOfResults.dart';
+import 'package:AgroBTech/myWidgets/attachmentsList.dart';
 import 'package:provider/provider.dart';
 import 'package:AgroBTech/providers/fileNameProvider.dart';
 

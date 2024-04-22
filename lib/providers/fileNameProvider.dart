@@ -19,14 +19,17 @@ class FileNameProvider extends ChangeNotifier {
   }
 
   void adicionaRascunho(String rascunho) {
-    if (_nomesRascunhos.contains(rascunho) == false &&rascunho.isEmpty==false) {
+    if (_nomesRascunhos.contains(rascunho) == false &&
+        rascunho.isEmpty == false) {
       _nomesRascunhos.add(rascunho);
     }
     notifyListeners(); // Notifica os consumidores sobre a mudança no estado
   }
 
   void adicionaPdf(String pdf) {
-    _nomesPdfs.add(pdf);
+    if (_nomesPdfs.contains(pdf) == false && pdf.isEmpty == false) {
+      _nomesPdfs.add(pdf);
+    }
     notifyListeners(); // Notifica os consumidores sobre a mudança no estado
   }
 

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:AgroBTech/reusableWidgets/headerBuilder.dart';
-import 'package:AgroBTech/reusableWidgets/observationsLIst.dart';
+import 'package:AgroBTech/myWidgets/headerBuilder.dart';
+import 'package:AgroBTech/myWidgets/observationsLIst.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
-import 'package:AgroBTech/reusableWidgets/veryLargeInserCamp.dart';
-import 'package:AgroBTech/reusableWidgets/tableOfResults.dart';
-import 'package:AgroBTech/reusableWidgets/attachmentsList.dart';
+import 'package:AgroBTech/myWidgets/veryLargeInserCamp.dart';
+import 'package:AgroBTech/myWidgets/tableOfResults.dart';
+import 'package:AgroBTech/myWidgets/attachmentsList.dart';
 import 'package:provider/provider.dart';
 import 'package:AgroBTech/providers/fileNameProvider.dart';
 import 'package:AgroBTech/utils/savePdf.dart';
@@ -72,6 +72,7 @@ class _CreateFilesScreenState extends State<CreateFilesScreen>
     try {
       // Obter o diretório de documentos
       Directory documentsDirectory = await getApplicationDocumentsDirectory();
+      print(documentsDirectory);
 
       // Criar a pasta "rascunhos" se não existir
       String rascunhosPath = '${documentsDirectory.path}/rascunhos';
@@ -393,7 +394,10 @@ class _CreateFilesScreenState extends State<CreateFilesScreen>
                     _cnpjController.text,
                     _farmController.text,
                     _results,
-                    _observations,_images,_attrachmentsControllers);
+                    _observations,
+                    _images,
+                    _attrachmentsControllers);
+                Provider.of<FileNameProvider>(listen: false, context).adicionaPdf(_fileNameController.text);
               },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
