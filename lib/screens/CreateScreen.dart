@@ -18,10 +18,7 @@ class CreateFilesScreen extends StatefulWidget {
   State<CreateFilesScreen> createState() => _CreateFilesScreenState();
 }
 
-class _CreateFilesScreenState extends State<CreateFilesScreen>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-
+class _CreateFilesScreenState extends State<CreateFilesScreen> {
   // Informações:
   TextEditingController _fileNameController = TextEditingController();
   TextEditingController _analyzeController = TextEditingController();
@@ -43,28 +40,18 @@ class _CreateFilesScreenState extends State<CreateFilesScreen>
   List<File> _images = [];
   List<TextEditingController> _attrachmentsControllers = [];
 
-  final List<String> pages = [
-    "Informações",
-    "Resultados",
-    "Observações",
-    "Anexos",
-    "Exportar",
-  ];
+  //madança de tela
+  int _index = 1;
 
   @override
   void initState() {
+    _index = 1;
+
     super.initState();
-    int currentDayIndex = 0;
-    _tabController = TabController(
-      length: pages.length,
-      vsync: this,
-      initialIndex: currentDayIndex,
-    );
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
     super.dispose();
   }
 
@@ -116,7 +103,7 @@ class _CreateFilesScreenState extends State<CreateFilesScreen>
             children: [
               _header(context),
               Expanded(
-                child: _body(context),
+                child: _buildBody(context),
               ),
             ],
           ),
@@ -125,22 +112,16 @@ class _CreateFilesScreenState extends State<CreateFilesScreen>
     );
   }
 
-  Widget _body(BuildContext context) {
-    return TabBarView(
-      controller: _tabController,
-      children: pages.map((page) => _buildBody(page, context)).toList(),
-    );
-  }
-
   Widget _header(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return HeaderBuilder(
       left: IconButton(
         icon: Icon(
           Icons.arrow_back,
           color: Colors.white,
-          size: screenWidth * 0.07,
+          size: screenWidth * 0.06,
         ),
         onPressed: () {
           Navigator.of(context).pop();
@@ -150,7 +131,7 @@ class _CreateFilesScreenState extends State<CreateFilesScreen>
         icon: Icon(
           Icons.save_as,
           color: Colors.white,
-          size: screenWidth * 0.07,
+          size: screenWidth * 0.06,
         ),
         onPressed: () async {
           await _criarArquivoJson();
@@ -159,47 +140,166 @@ class _CreateFilesScreenState extends State<CreateFilesScreen>
         },
       ),
       center: Container(
-        height: MediaQuery.of(context).size.width * 0.6,
-        width: MediaQuery.of(context).size.width * 0.6,
+        height: MediaQuery.of(context).size.width * 0.25,
+        width: MediaQuery.of(context).size.width * 0.25,
         decoration: BoxDecoration(
           color: Colors.white,
           shape: BoxShape.circle,
-          image: DecorationImage(
-            image: AssetImage('assets/images/logo B.png'),
-            fit: BoxFit.contain,
+        ),
+        child: Center(
+          child: Icon(
+            Icons.assignment_add,
+            size: MediaQuery.of(context).size.width * 0.15, // Tamanho do ícone
+            color: Colors.green, // Cor do ícone
           ),
         ),
       ),
       top: Text(
         "Criar laudo",
-        style: TextStyle(fontSize: screenWidth * 0.06, color: Colors.white),
+        style: TextStyle(fontSize: screenWidth * 0.05, color: Colors.white),
       ),
       bottom: Center(
-        child: TabBar(
-          tabAlignment: TabAlignment.center,
-          controller: _tabController,
-          isScrollable: true,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.greenAccent[100],
-          indicatorColor: Colors.white,
-          dividerColor: Colors.transparent,
-          indicatorPadding: EdgeInsets.zero,
-          tabs: pages
-              .map(
-                (day) => Tab(
-                  child: Container(
-                    child: Text(
-                      day,
-                      style: TextStyle(
-                        fontSize: screenWidth * 0.042,
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: screenHeight * 0.01,
+          ),
+          Center(
+            child: Text(_index.toString() + " de 4",
+                style: TextStyle(
+                    fontSize: screenWidth * 0.039, color: Colors.white)),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _index > 1
+                  ? TextButton(
+                      onPressed: () => {
+                        setState(() {
+                          _index--;
+                        })
+                      },
+                      style: ButtonStyle(
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(180.0),
+                          ),
+                        ),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            Colors.transparent),
                       ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.arrow_back_ios,
+                            color: Colors.white,
+                            size: screenWidth * 0.039,
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            'Voltar',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: screenWidth * 0.039,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : SizedBox(
+                      height: 1,
                     ),
-                  ),
-                ),
-              )
-              .toList(),
-        ),
-      ),
+              _index < 4
+                  ? TextButton(
+                      onPressed: () => {
+                        setState(() {
+                          _index++;
+                        })
+                      },
+                      style: ButtonStyle(
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                        ),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            Colors.transparent),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Próximo',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: screenWidth * 0.039,
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.white,
+                            size: screenWidth * 0.039,
+                          ),
+                        ],
+                      ),
+                    )
+                  : TextButton(
+                      onPressed: () async {
+                        await createPDF(
+                            context,
+                            _fileNameController.text,
+                            _analyzeController.text,
+                            _numberController.text,
+                            _contractorController.text,
+                            _materialController.text,
+                            _dateController.text,
+                            _cnpjController.text,
+                            _farmController.text,
+                            _results,
+                            _observations,
+                            _images,
+                            _attrachmentsControllers);
+                        Provider.of<FileNameProvider>(listen: false, context)
+                            .adicionaPdf(_fileNameController.text);
+                      },
+                      style: ButtonStyle(
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                        ),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            Colors.transparent),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Exportar',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: screenWidth * 0.039,
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          Icon(
+                            Icons.picture_as_pdf,
+                            color: Colors.white,
+                            size: screenWidth * 0.039,
+                          ),
+                        ],
+                      ),
+                    )
+            ],
+          ),
+        ],
+      )),
     );
   }
 
@@ -299,13 +399,15 @@ class _CreateFilesScreenState extends State<CreateFilesScreen>
     await _createAndWriteToFile(nomeArquivo, jsonString);
   }
 
-  Widget _buildBody(String page, BuildContext context) {
+  Widget _buildBody(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
-    if (page == "Observações") {
-      return SingleChildScrollView(
-        child: Column(
+    Widget page = Text("Erro ao carregar ");
+
+    switch (_index) {
+      case 1:
+        page = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
@@ -315,19 +417,83 @@ class _CreateFilesScreenState extends State<CreateFilesScreen>
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ObservationsList(controllers: _observations),
+                  SizedBox(
+                    height: screenHeight * 0.02,
+                  ),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    physics: const BouncingScrollPhysics(),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          VeryLargeInsertCamp(
+                              controller: _fileNameController,
+                              text: "Nome do arquivo",
+                              icon: Icons.description),
+                          SizedBox(
+                            height: screenHeight * 0.01,
+                          ),
+                          VeryLargeInsertCamp(
+                              controller: _analyzeController,
+                              text: "Tipo análise",
+                              icon: Icons.biotech),
+                          SizedBox(
+                            height: screenHeight * 0.01,
+                          ),
+                          VeryLargeInsertCamp(
+                              controller: _numberController,
+                              text: "Número laudo",
+                              icon: Icons.pin),
+                          SizedBox(
+                            height: screenHeight * 0.01,
+                          ),
+                          VeryLargeInsertCamp(
+                              controller: _contractorController,
+                              text: "Contratante",
+                              icon: Icons.handshake_sharp),
+                          SizedBox(
+                            height: screenHeight * 0.01,
+                          ),
+                          VeryLargeInsertCamp(
+                              controller: _materialController,
+                              text: "Material",
+                              icon: Icons.science_rounded),
+                          SizedBox(
+                            height: screenHeight * 0.01,
+                          ),
+                          VeryLargeInsertCamp(
+                              controller: _dateController,
+                              text: "Data de entrada",
+                              icon: Icons.calendar_month),
+                          SizedBox(
+                            height: screenHeight * 0.01,
+                          ),
+                          VeryLargeInsertCamp(
+                              controller: _cnpjController,
+                              text: "CNPJ",
+                              icon: Icons.corporate_fare_outlined),
+                          SizedBox(
+                            height: screenHeight * 0.01,
+                          ),
+                          VeryLargeInsertCamp(
+                              controller: _farmController,
+                              text: "Fazenda",
+                              icon: Icons.agriculture),
+                        ],
+                      ),
+                    ),
+                  ),
                   SizedBox(height: screenWidth * 0.05),
                 ],
               ),
             )
           ],
-        ),
-      );
-    }
+        );
+        break;
 
-    if (page == "Resultados") {
-      return SingleChildScrollView(
-        child: Column(
+      case 2:
+        page = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
@@ -356,177 +522,44 @@ class _CreateFilesScreenState extends State<CreateFilesScreen>
               ),
             )
           ],
-        ),
-      );
-    }
+        );
+        break;
 
-    if (page == "Anexos") {
-      return AttachmentsList(
-        attachments: _attrachments,
-        images: _images,
-        observationsControllers: _attrachmentsControllers,
-      );
-    }
-
-    if (page == "Exportar") {
-      return Column(children: [
-        Icon(
-          Icons.picture_as_pdf,
-          size: 120,
-          color: Colors.green,
-        ),
-        SizedBox(
-          height: 25,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+      case 3:
+        page = Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ElevatedButton(
-              onPressed: () async {
-                await createPDF(
-                    context,
-                    _fileNameController.text,
-                    _analyzeController.text,
-                    _numberController.text,
-                    _contractorController.text,
-                    _materialController.text,
-                    _dateController.text,
-                    _cnpjController.text,
-                    _farmController.text,
-                    _results,
-                    _observations,
-                    _images,
-                    _attrachmentsControllers);
-                Provider.of<FileNameProvider>(listen: false, context).adicionaPdf(_fileNameController.text);
-              },
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Container(
+              padding: EdgeInsets.only(bottom: screenHeight * 0.01),
+              color: Colors.white,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    "Salvar",
-                    style: TextStyle(color: Colors.white, fontSize: 14),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Icon(Icons.save)
+                  ObservationsList(controllers: _observations),
+                  SizedBox(height: screenWidth * 0.05),
                 ],
               ),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // Adicione aqui a lógica para salvar o PDF
-                print('PDF salvo!');
-              },
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Compartilhar",
-                      style: TextStyle(color: Colors.white, fontSize: 14)),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Icon(Icons.share)
-                ],
-              ),
+            )
+          ],
+        );
+
+        break;
+
+      case 4:
+        page = Column(
+          children: [
+            AttachmentsList(
+              attachments: _attrachments,
+              images: _images,
+              observationsControllers: _attrachmentsControllers,
             ),
           ],
-        )
-      ]);
+        );
     }
 
     return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: EdgeInsets.only(bottom: screenHeight * 0.01),
-            color: Colors.white,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  physics: const BouncingScrollPhysics(),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        VeryLargeInsertCamp(
-                            controller: _fileNameController,
-                            text: "Nome do arquivo",
-                            icon: Icons.description),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        VeryLargeInsertCamp(
-                            controller: _analyzeController,
-                            text: "Tipo análise",
-                            icon: Icons.biotech),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        VeryLargeInsertCamp(
-                            controller: _numberController,
-                            text: "Número laudo",
-                            icon: Icons.pin),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        VeryLargeInsertCamp(
-                            controller: _contractorController,
-                            text: "Contratante",
-                            icon: Icons.handshake_sharp),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        VeryLargeInsertCamp(
-                            controller: _materialController,
-                            text: "Material",
-                            icon: Icons.science_rounded),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        VeryLargeInsertCamp(
-                            controller: _dateController,
-                            text: "Data de entrada",
-                            icon: Icons.calendar_month),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        VeryLargeInsertCamp(
-                            controller: _cnpjController,
-                            text: "CNPJ",
-                            icon: Icons.corporate_fare_outlined),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        VeryLargeInsertCamp(
-                            controller: _farmController,
-                            text: "Fazenda",
-                            icon: Icons.agriculture),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: screenWidth * 0.05),
-              ],
-            ),
-          )
-        ],
-      ),
+      child: page,
     );
   }
 }

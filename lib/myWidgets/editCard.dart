@@ -19,7 +19,7 @@ class EditCard extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: padding, vertical: padding),
       child: Container(
-        height: screenHeight * 0.1, // 10% da altura da tela
+        height: screenHeight * 0.085, // 10% da altura da tela
         width: screenWidth * 0.95, // 95% da largura da tela
         padding: EdgeInsets.symmetric(horizontal: padding),
         decoration: BoxDecoration(
@@ -35,10 +35,10 @@ class EditCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                const Icon(
+                 Icon(
                   Icons.description,
                   color: Colors.green,
-                  size: 30,
+                  size: screenWidth * 0.085,
                 ),
                 SizedBox(
                   width: screenWidth * 0.02, // 2% da largura da tela para o espaçamento entre o ícone e o texto
@@ -50,7 +50,7 @@ class EditCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis, // Adiciona reticências se o texto for muito grande
                     style: TextStyle(
                       color: Colors.green,
-                      fontSize: screenHeight * 0.03, // 3% da altura da tela para o tamanho da fonte
+                      fontSize: screenHeight* 0.02, // 3% da altura da tela para o tamanho da fonte
                     ),
                   ),
                 ),
@@ -86,7 +86,7 @@ class EditCard extends StatelessWidget {
                   icon: Icon(
                     Icons.edit,
                     color: Colors.green,
-                    size: 30,
+                    size: screenWidth * 0.07,
                   ),
                 ),
                 SizedBox(
@@ -100,7 +100,7 @@ class EditCard extends StatelessWidget {
                   icon: Icon(
                     Icons.delete,
                     color: Colors.red[800],
-                    size: 30,
+                    size: screenWidth * 0.07,
                   ),
                 ),
               ],

@@ -33,6 +33,7 @@ class _AttachmentsListState extends State<AttachmentsList> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
     if (_images.isEmpty == false && _attrachments.isEmpty) {
       for (int i = 0; i < _images.length; i++) {
         _attrachments.add(
@@ -45,7 +46,7 @@ class _AttachmentsListState extends State<AttachmentsList> {
               children: [
                 Text(
                   "Anexo " + (_attrachments.length + 1).toString(),
-                  style: TextStyle(fontSize: 18, color: Colors.green),
+                  style: TextStyle(fontSize: screenHeight*0.025, color: Colors.green),
                 ),
                 SizedBox(
                   height: 5,
@@ -69,7 +70,7 @@ class _AttachmentsListState extends State<AttachmentsList> {
                   ),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: screenHeight*0.025,
                 ),
                 Positioned(
                   top: 1,
@@ -118,7 +119,7 @@ class _AttachmentsListState extends State<AttachmentsList> {
                                   ),
                                   keyboardType: TextInputType.multiline,
                                   style: TextStyle(
-                                      fontSize: 16, color: Colors.grey[900]),
+                                      fontSize: screenHeight*0.025, color: Colors.grey[900]),
                                 ),
                               ),
                             ),
@@ -178,7 +179,7 @@ class _AttachmentsListState extends State<AttachmentsList> {
                                               (_attrachments.length + 1)
                                                   .toString(),
                                           style: TextStyle(
-                                              fontSize: 18,
+                                              fontSize: screenHeight*0.025,
                                               color: Colors.green),
                                         ),
                                         SizedBox(
@@ -271,7 +272,7 @@ class _AttachmentsListState extends State<AttachmentsList> {
                                                                 color: Colors
                                                                     .grey[500],
                                                                 fontSize:
-                                                                    16), // Altera a cor do texto de dica para preto
+                                                                    screenHeight*0.025), // Altera a cor do texto de dica para preto
                                                             contentPadding:
                                                                 EdgeInsets.symmetric(
                                                                     vertical:
@@ -281,7 +282,7 @@ class _AttachmentsListState extends State<AttachmentsList> {
                                                               TextInputType
                                                                   .multiline,
                                                           style: TextStyle(
-                                                              fontSize: 16,
+                                                              fontSize: screenHeight*0.025,
                                                               color: Colors
                                                                   .grey[900]),
                                                         ),
@@ -302,7 +303,7 @@ class _AttachmentsListState extends State<AttachmentsList> {
                           },
                           icon: Icon(
                             Icons.add,
-                            size: 30,
+                            size: screenHeight*0.02,
                             color: Colors.white,
                           ),
                         ),
@@ -322,7 +323,7 @@ class _AttachmentsListState extends State<AttachmentsList> {
                           },
                           icon: Icon(
                             Icons.remove,
-                            size: 30,
+                            size: screenHeight*0.02,
                             color: Colors.white,
                           ),
                         ),
@@ -338,10 +339,10 @@ class _AttachmentsListState extends State<AttachmentsList> {
               children: [
                 Text(
                   "Nenhum anexo adicionado",
-                  style: TextStyle(fontSize: 18),
+                  style: TextStyle(fontSize: screenHeight*0.02),
                 ),
                 SizedBox(
-                  height: 15,
+                  height: screenHeight*0.03,
                 ),
                 Container(
                   decoration: BoxDecoration(
@@ -370,7 +371,7 @@ class _AttachmentsListState extends State<AttachmentsList> {
                                     "Anexo " +
                                         (_attrachments.length + 1).toString(),
                                     style: TextStyle(
-                                        fontSize: 18, color: Colors.green),
+                                        fontSize: screenHeight*0.025, color: Colors.green),
                                   ),
                                   SizedBox(
                                     height: 5,
@@ -451,7 +452,7 @@ class _AttachmentsListState extends State<AttachmentsList> {
                                                           color:
                                                               Colors.grey[500],
                                                           fontSize:
-                                                              16), // Altera a cor do texto de dica para preto
+                                                              screenHeight*0.025), // Altera a cor do texto de dica para preto
                                                       contentPadding:
                                                           EdgeInsets.symmetric(
                                                               vertical:
@@ -460,7 +461,7 @@ class _AttachmentsListState extends State<AttachmentsList> {
                                                     keyboardType:
                                                         TextInputType.multiline,
                                                     style: TextStyle(
-                                                        fontSize: 16,
+                                                        fontSize: screenHeight*0.025,
                                                         color:
                                                             Colors.grey[900]),
                                                   ),
@@ -481,7 +482,7 @@ class _AttachmentsListState extends State<AttachmentsList> {
                     },
                     icon: Icon(
                       Icons.add,
-                      size: 30,
+                      size: screenHeight*0.02,
                       color: Colors.white,
                     ),
                   ),

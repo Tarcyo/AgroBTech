@@ -16,8 +16,11 @@ class VeryLargeInsertCamp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
+      padding:  EdgeInsets.symmetric(horizontal: screenWidth*0.05, vertical: screenHeight*0.007),
       child: Positioned(
         top: margin,
         left: margin,
@@ -29,14 +32,14 @@ class VeryLargeInsertCamp extends StatelessWidget {
                 Icon(
                   icon,
                   color: Colors.green,
-                  size: 40,
+                  size: screenHeight * 0.035,
                 ),
                 SizedBox(
-                  width: 10,
+                  width: screenWidth * 0.02,
                 ),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width - (margin * 5),
-                  height: 50,
+                  width: screenWidth - (margin * 5),
+                  height: screenHeight * 0.06,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -63,13 +66,15 @@ class VeryLargeInsertCamp extends StatelessWidget {
                           hintText: text,
                           hintStyle: TextStyle(
                               color: Colors.grey[500],
-                              fontSize:
-                                  16), // Altera a cor do texto de dica para preto
+                              fontSize: screenHeight *
+                                  0.02), // Altera a cor do texto de dica para preto
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 12.0), // Define o padding do conteúdo
                         ),
                         keyboardType: TextInputType.multiline,
-                        style: TextStyle(fontSize: 16, color: Colors.grey[900]),
+                        style: TextStyle(
+                            fontSize: screenHeight * 0.02,
+                            color: Colors.grey[900]),
                       ),
                     ),
                   ),

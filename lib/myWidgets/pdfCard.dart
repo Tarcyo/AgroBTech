@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:AgroBTech/providers/fileNameProvider.dart';
-import 'pdfViewer.dart';
+import '../screens/pdfViewer.dart';
 
 class PdfCard extends StatelessWidget {
   final String _text;
@@ -18,8 +18,8 @@ class PdfCard extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: padding, vertical: padding),
       child: Container(
-        height: screenHeight * 0.1, // 8% da altura da tela
-        width: screenWidth * 0.95, // 94% da largura da tela
+        height: screenHeight * 0.085, // 10% da altura da tela
+        width: screenWidth * 0.95, //// 94% da largura da tela
         padding: EdgeInsets.symmetric(horizontal: padding),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -39,7 +39,7 @@ class PdfCard extends StatelessWidget {
                 Icon(
                   Icons.picture_as_pdf,
                   color: Colors.green,
-                  size: screenWidth * 0.11,
+                  size: screenWidth * 0.085,
                 ),
                 SizedBox(
                   width: screenWidth *
@@ -55,7 +55,7 @@ class PdfCard extends StatelessWidget {
                     style: TextStyle(
                       color: Colors.green,
                       fontSize: screenHeight *
-                          0.03, // 3.5% da altura da tela para o tamanho da fonte
+                          0.02, // 3.5% da altura da tela para o tamanho da fonte
                     ),
                   ),
                 ),
@@ -73,7 +73,7 @@ class PdfCard extends StatelessWidget {
                       PageRouteBuilder(
                         transitionDuration: duration,
                         pageBuilder: (_, __, ___) =>
-                            PDFViewPAge(filePath, _text),
+                            PDFViewPage(filePath, _text),
                         transitionsBuilder: (_, animation, __, child) {
                           return ScaleTransition(
                             scale: Tween<double>(

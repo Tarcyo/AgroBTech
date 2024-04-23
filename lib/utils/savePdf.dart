@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:share/share.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:AgroBTech/myWidgets/tableOfResults.dart';
+import 'package:AgroBTech/screens/pdfViewer.dart';
 
 pw.Widget _buildTable(List<dynamic> list) {
   print(list);
@@ -578,7 +579,7 @@ Future<void> createPDF(
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       backgroundColor: Colors.red, // Cor de fundo verde
       content: Text(
-        'Pasta selecionada inválida!',
+        'Erro ao salvar o PDF!',
         style: TextStyle(fontSize: 18),
       ),
       duration: Duration(seconds: 3),
@@ -587,13 +588,29 @@ Future<void> createPDF(
   }
 
   if (salvou == true) {
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      backgroundColor: Colors.green, // Cor de fundo verde
-      content: Text(
-        'Arquivo salvo com sucesso!',
-        style: TextStyle(fontSize: 18),
+    const Duration duration = Duration(milliseconds: 600);
+    String filePath = folderPath+"/"+nomeArquivo + ".pdf";
+    print("caminho: " + filePath);
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        transitionDuration: duration,
+        pageBuilder: (_, __, ___) => PDFViewPage(filePath, nomeArquivo),
+        transitionsBuilder: (_, animation, __, child) {
+          return ScaleTransition(
+            scale: Tween<double>(
+              begin: 0.0,
+              end: 1.0,
+            ).animate(
+              CurvedAnimation(
+                parent: animation,
+                curve: Curves.easeInOut,
+              ),
+            ),
+            child: child,
+          );
+        },
       ),
-      duration: Duration(seconds: 3),
-    ));
+    );
   }
 }

@@ -4,7 +4,8 @@ import '../myWidgets/veryLargeInserCamp.dart';
 class ObservationsList extends StatefulWidget {
   final List<TextEditingController> controllers;
 
-  const ObservationsList({Key? key, required this.controllers}) : super(key: key);
+  const ObservationsList({Key? key, required this.controllers})
+      : super(key: key);
 
   @override
   _ObservationsListState createState() => _ObservationsListState();
@@ -24,6 +25,8 @@ class _ObservationsListState extends State<ObservationsList> {
         ),
       );
     }
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return widget.controllers.isNotEmpty
         ? SingleChildScrollView(
             scrollDirection: Axis.horizontal,
@@ -34,7 +37,7 @@ class _ObservationsListState extends State<ObservationsList> {
                 children: [
                   ...observations,
                   SizedBox(
-                    height: 30,
+                    height: screenHeight*0.03,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -52,13 +55,13 @@ class _ObservationsListState extends State<ObservationsList> {
                           },
                           icon: Icon(
                             Icons.add,
-                            size: 30,
+                            size: screenHeight*0.02,
                             color: Colors.white,
                           ),
                         ),
                       ),
                       SizedBox(
-                        width: 150,
+                        width: screenWidth*0.5,
                       ),
                       Container(
                         decoration: BoxDecoration(
@@ -73,7 +76,7 @@ class _ObservationsListState extends State<ObservationsList> {
                           },
                           icon: Icon(
                             Icons.remove,
-                            size: 30,
+                            size: screenHeight*0.02,
                             color: Colors.white,
                           ),
                         ),
@@ -89,10 +92,10 @@ class _ObservationsListState extends State<ObservationsList> {
               children: [
                 Text(
                   "Nenhuma observação adicionada",
-                  style: TextStyle(fontSize: 18),
+                  style: TextStyle(fontSize: screenHeight*0.02),
                 ),
                 SizedBox(
-                  height: 15,
+                  height: screenHeight*0.03,
                 ),
                 Container(
                   decoration: BoxDecoration(
@@ -107,7 +110,7 @@ class _ObservationsListState extends State<ObservationsList> {
                     },
                     icon: Icon(
                       Icons.add,
-                      size: 30,
+                      size: screenHeight*0.02,
                       color: Colors.white,
                     ),
                   ),

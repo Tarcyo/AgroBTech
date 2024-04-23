@@ -29,10 +29,7 @@ class _SaveFilesScreenState extends State<SaveFilesScreen>
   @override
   void initState() {
     super.initState();
-    int currentDayIndex = DateTime.now().weekday - 1;
-    if (currentDayIndex < 0 || currentDayIndex >= pages.length) {
-      currentDayIndex = 0;
-    }
+    int currentDayIndex =0;
     _tabController = TabController(
       length: pages.length,
       vsync: this,
@@ -151,7 +148,7 @@ class _SaveFilesScreenState extends State<SaveFilesScreen>
         icon: Icon(
           Icons.logout,
           color: Colors.white,
-          size: screenWidth * 0.07,
+          size: screenWidth * 0.06,
         ),
         onPressed: () {
           exit(0);
@@ -161,13 +158,13 @@ class _SaveFilesScreenState extends State<SaveFilesScreen>
         icon: Icon(
           Icons.help_outline,
           color: Colors.white,
-          size: screenWidth * 0.07,
+          size: screenWidth * 0.06,
         ),
         onPressed: () {},
       ),
       center: Container(
-        height: MediaQuery.of(context).size.width * 0.44,
-        width: MediaQuery.of(context).size.width * 0.44,
+        height: MediaQuery.of(context).size.width * 0.4,
+        width: MediaQuery.of(context).size.width * 0.4,
         decoration: BoxDecoration(
           color: Colors.white,
           shape: BoxShape.circle,
@@ -179,7 +176,7 @@ class _SaveFilesScreenState extends State<SaveFilesScreen>
       ),
       top: Text(
         "Gerador de laudos",
-        style: TextStyle(fontSize: screenWidth * 0.06, color: Colors.white),
+        style: TextStyle(fontSize: screenWidth * 0.05, color: Colors.white),
       ),
       bottom: Center(
         child: TabBar(
@@ -198,7 +195,7 @@ class _SaveFilesScreenState extends State<SaveFilesScreen>
                     child: Text(
                       day,
                       style: TextStyle(
-                        fontSize: screenWidth * 0.05,
+                        fontSize: screenWidth * 0.04,
                       ),
                     ),
                   ),

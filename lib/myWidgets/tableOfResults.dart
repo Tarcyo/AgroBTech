@@ -25,6 +25,10 @@ class _DataTableWidgetState extends State<DataTableWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+        final screenWidth = MediaQuery.of(context).size.width;
+
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -37,33 +41,33 @@ class _DataTableWidgetState extends State<DataTableWidget> {
               columns: [
                 DataColumn(
                     label:
-                        Text('ID lab', style: TextStyle(color: Colors.green))),
+                        Text('ID lab', style: TextStyle(fontSize: screenHeight*0.0138,color: Colors.green))),
                 DataColumn(
                     label: Text('ID cliente',
-                        style: TextStyle(color: Colors.green))),
+                        style: TextStyle(fontSize: screenHeight*0.0138,color: Colors.green))),
                 DataColumn(
                     label: Text('Conídios/ml',
-                        style: TextStyle(color: Colors.green))),
+                        style: TextStyle(fontSize: screenHeight*0.0138,color: Colors.green))),
                 DataColumn(
                     label:
-                        Text('UFC/ml', style: TextStyle(color: Colors.green))),
+                        Text('UFC/ml', style: TextStyle(fontSize: screenHeight*0.0138,color: Colors.green))),
               ],
               rows: List.from(rows),
             ),
           ),
         ),
-        SizedBox(height: 10),
+        SizedBox(height: screenHeight*0.030),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
               onPressed: addRow,
-              icon: Icon(Icons.add, size: 40),
+              icon: Icon(Icons.add, size: screenHeight*0.04),
             ),
-            SizedBox(width: 5),
+            SizedBox(width: screenWidth*0.05),
             IconButton(
               onPressed: removeRow,
-              icon: Icon(Icons.remove, size: 40),
+              icon: Icon(Icons.remove, size: screenHeight*0.04),
             ),
           ],
         ),
