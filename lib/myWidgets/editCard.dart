@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:AgroBTech/screens/EditScreen.dart';
+import 'package:AgroBTech/screens/CreateScreen.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -24,10 +24,12 @@ class EditCard extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: padding),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(screenHeight * 0.15), // 15% da altura da tela para borda arredondada
+          borderRadius: BorderRadius.circular(screenHeight *
+              0.15), // 15% da altura da tela para borda arredondada
           border: Border.all(
             color: Colors.green,
-            width: screenWidth * 0.003, // 0.3% da largura da tela para a largura da borda
+            width: screenWidth *
+                0.003, // 0.3% da largura da tela para a largura da borda
           ),
         ),
         child: Row(
@@ -35,22 +37,25 @@ class EditCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                 Icon(
+                Icon(
                   Icons.description,
                   color: Colors.green,
                   size: screenWidth * 0.085,
                 ),
                 SizedBox(
-                  width: screenWidth * 0.02, // 2% da largura da tela para o espaçamento entre o ícone e o texto
+                  width: screenWidth *
+                      0.02, // 2% da largura da tela para o espaçamento entre o ícone e o texto
                 ),
                 Container(
                   width: screenWidth * 0.45, // Defina a largura máxima do texto
                   child: Text(
                     _nomeArquivo,
-                    overflow: TextOverflow.ellipsis, // Adiciona reticências se o texto for muito grande
+                    overflow: TextOverflow
+                        .ellipsis, // Adiciona reticências se o texto for muito grande
                     style: TextStyle(
                       color: Colors.green,
-                      fontSize: screenHeight* 0.02, // 3% da altura da tela para o tamanho da fonte
+                      fontSize: screenHeight *
+                          0.02, // 3% da altura da tela para o tamanho da fonte
                     ),
                   ),
                 ),
@@ -65,7 +70,7 @@ class EditCard extends StatelessWidget {
                       context,
                       PageRouteBuilder(
                         transitionDuration: Duration(milliseconds: 600),
-                        pageBuilder: (_, __, ___) => EditFilesScreen(content),
+                        pageBuilder: (_, __, ___) => CreateFilesScreen(content),
                         transitionsBuilder: (_, animation, __, child) {
                           return ScaleTransition(
                             scale: Tween<double>(
@@ -90,12 +95,93 @@ class EditCard extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: screenWidth * 0.01, // 1% da largura da tela para o espaçamento entre os ícones
+                  width: screenWidth *
+                      0.01, // 1% da largura da tela para o espaçamento entre os ícones
                 ),
                 IconButton(
                   onPressed: () async {
-                    await _deleteFile();
-                    Provider.of<FileNameProvider>(listen: false, context).removeRascunho(_nomeArquivo);
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                32.0), // Ajuste o valor conforme desejado
+                          ),
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Atenção",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.green),
+                              ),
+                            ],
+                          ),
+                          content: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Deseja deletar o arquivo?",
+                                style: TextStyle(
+                                    color: Colors.grey[800], fontSize: 16),
+                              ),
+                            ],
+                          ),
+                          actions: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.green,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(180.0),
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    // Implementar aqui a lógica para sair
+                                    await _deleteFile();
+                                    Provider.of<FileNameProvider>(
+                                            listen: false, context)
+                                        .removeRascunho(_nomeArquivo);
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(
+                                    "Sim",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.green,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(180.0),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    // Fechar o diálogo sem sair
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(
+                                    "Não",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
                   icon: Icon(
                     Icons.delete,

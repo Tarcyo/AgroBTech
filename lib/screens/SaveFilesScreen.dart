@@ -29,7 +29,7 @@ class _SaveFilesScreenState extends State<SaveFilesScreen>
   @override
   void initState() {
     super.initState();
-    int currentDayIndex =0;
+    int currentDayIndex = 0;
     _tabController = TabController(
       length: pages.length,
       vsync: this,
@@ -104,7 +104,7 @@ class _SaveFilesScreenState extends State<SaveFilesScreen>
             context,
             PageRouteBuilder(
               transitionDuration: duration,
-              pageBuilder: (_, __, ___) => CreateFilesScreen(),
+              pageBuilder: (_, __, ___) => CreateFilesScreen(""),
               transitionsBuilder: (_, animation, __, child) {
                 return ScaleTransition(
                   scale: Tween<double>(
@@ -151,7 +151,82 @@ class _SaveFilesScreenState extends State<SaveFilesScreen>
           size: screenWidth * 0.06,
         ),
         onPressed: () {
-          exit(0);
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                      32.0), // Ajuste o valor conforme desejado
+                ),
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Atenção",
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green),
+                    ),
+                  ],
+                ),
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Deseja realmente sair?",
+                      style: TextStyle(color: Colors.grey[800], fontSize: 16),
+                    ),
+                  ],
+                ),
+                actions: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(180.0),
+                          ),
+                        ),
+                        onPressed: () {
+                          // Implementar aqui a lógica para sair
+
+                          exit(0);
+                        },
+                        child: Text(
+                          "Sim",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(180.0),
+                          ),
+                        ),
+                        onPressed: () {
+                          // Fechar o diálogo sem sair
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          "Não",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            },
+          );
         },
       ),
       right: IconButton(

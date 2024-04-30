@@ -35,6 +35,7 @@ class AgroBioTech extends StatelessWidget {
 
     return MaterialApp(
       title: 'Agro Bio Tech: Gerador de laudos',
+      
       theme: ThemeData(
         fontFamily: "Quicksand",
         primaryColor: Colors.green, // Definindo a cor verde

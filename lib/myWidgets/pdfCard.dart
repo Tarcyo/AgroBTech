@@ -99,9 +99,88 @@ class PdfCard extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: () async {
-                    await _deleteFile();
-                    Provider.of<FileNameProvider>(listen: false, context)
-                        .removePdf(_text);
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                32.0), // Ajuste o valor conforme desejado
+                          ),
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Atenção",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.green),
+                              ),
+                            ],
+                          ),
+                          content: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Deseja deletar o arquivo?",
+                                style: TextStyle(
+                                    color: Colors.grey[800], fontSize: 16),
+                              ),
+                            ],
+                          ),
+                          actions: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.green,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(180.0),
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    // Implementar aqui a lógica para sair
+                                    await _deleteFile();
+                                    Provider.of<FileNameProvider>(
+                                            listen: false, context)
+                                        .removePdf(_text);
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(
+                                    "Sim",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.green,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(180.0),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    // Fechar o diálogo sem sair
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(
+                                    "Não",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
                   icon: Icon(
                     Icons.delete,

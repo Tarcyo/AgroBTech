@@ -26,8 +26,7 @@ class _DataTableWidgetState extends State<DataTableWidget> {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
-        final screenWidth = MediaQuery.of(context).size.width;
-
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,34 +39,42 @@ class _DataTableWidgetState extends State<DataTableWidget> {
               horizontalMargin: 10,
               columns: [
                 DataColumn(
-                    label:
-                        Text('ID lab', style: TextStyle(fontSize: screenHeight*0.0138,color: Colors.green))),
+                    label: Text('ID lab',
+                        style: TextStyle(
+                            fontSize: screenHeight * 0.0138,
+                            color: Colors.green))),
                 DataColumn(
                     label: Text('ID cliente',
-                        style: TextStyle(fontSize: screenHeight*0.0138,color: Colors.green))),
+                        style: TextStyle(
+                            fontSize: screenHeight * 0.0138,
+                            color: Colors.green))),
                 DataColumn(
                     label: Text('Conídios/ml',
-                        style: TextStyle(fontSize: screenHeight*0.0138,color: Colors.green))),
+                        style: TextStyle(
+                            fontSize: screenHeight * 0.0138,
+                            color: Colors.green))),
                 DataColumn(
-                    label:
-                        Text('UFC/ml', style: TextStyle(fontSize: screenHeight*0.0138,color: Colors.green))),
+                    label: Text('UFC/ml',
+                        style: TextStyle(
+                            fontSize: screenHeight * 0.0138,
+                            color: Colors.green))),
               ],
               rows: List.from(rows),
             ),
           ),
         ),
-        SizedBox(height: screenHeight*0.030),
+        SizedBox(height: screenHeight * 0.030),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
               onPressed: addRow,
-              icon: Icon(Icons.add, size: screenHeight*0.04),
+              icon: Icon(Icons.add, size: screenHeight * 0.04),
             ),
-            SizedBox(width: screenWidth*0.05),
+            SizedBox(width: screenWidth * 0.05),
             IconButton(
               onPressed: removeRow,
-              icon: Icon(Icons.remove, size: screenHeight*0.04),
+              icon: Icon(Icons.remove, size: screenHeight * 0.04),
             ),
           ],
         ),
@@ -89,11 +96,87 @@ class _DataTableWidgetState extends State<DataTableWidget> {
   }
 
   void removeRow() {
-    setState(() {
-      if (rows.isNotEmpty) {
-        rows.removeLast();
-      }
-    });
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius:
+                BorderRadius.circular(32.0), // Ajuste o valor conforme desejado
+          ),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Atenção",
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green),
+              ),
+            ],
+          ),
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Deseja remover a ultima linha?",
+                style: TextStyle(color: Colors.grey[800], fontSize: 16),
+              ),
+            ],
+          ),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(180.0),
+                    ),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      if (rows.isNotEmpty) {
+                        rows.removeLast();
+                      }
+                    });
+                    Navigator.of(context).pop();
+
+                    // Implementar aqui a lógica para sair
+                  },
+                  child: Text(
+                    "Sim",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(180.0),
+                    ),
+                  ),
+                  onPressed: () {
+                    // Fechar o diálogo sem sair
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    "Não",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
   }
 }
 

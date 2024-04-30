@@ -5,12 +5,14 @@ class VeryLargeInsertCamp extends StatelessWidget {
   final double margin;
   final String text;
   final IconData icon;
+  final TextInputType;
 
   const VeryLargeInsertCamp({
     Key? key,
     required this.controller,
     required this.text,
     required this.icon,
+    required this.TextInputType,
     this.margin = 16.0, // Valor padrão de margem
   }) : super(key: key);
 
@@ -20,7 +22,8 @@ class VeryLargeInsertCamp extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Padding(
-      padding:  EdgeInsets.symmetric(horizontal: screenWidth*0.05, vertical: screenHeight*0.007),
+      padding: EdgeInsets.symmetric(
+          horizontal: screenWidth * 0.05, vertical: screenHeight * 0.007),
       child: Positioned(
         top: margin,
         left: margin,
@@ -71,7 +74,7 @@ class VeryLargeInsertCamp extends StatelessWidget {
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 12.0), // Define o padding do conteúdo
                         ),
-                        keyboardType: TextInputType.multiline,
+                        keyboardType: TextInputType,
                         style: TextStyle(
                             fontSize: screenHeight * 0.02,
                             color: Colors.grey[900]),
